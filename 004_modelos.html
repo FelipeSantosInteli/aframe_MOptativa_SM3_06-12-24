@@ -11,11 +11,20 @@
           <img id="fundo" src="./texturas/material_emissive.png" />
           <a-assets-item id="ship" src="./assets/pixel_low_poly_spaceship/scene.gltf"></a-assets-item>
           <a-assets-item id="propulsion" src="./assets/simple_engine_plume_test/simple_engine_plume_test.glb"></a-assets-item>
+          <a-assets-item id="hyperspeed" src="./assets/hyperspeed_starfield/scene.gltf"></a-assets-item>
 
 
         </a-assets>
 
         <a-sky src="#fundo"></a-sky>
+
+        <a-entsceneity
+        gltf-model="#hyperspeed"
+        scale="1 1 1"
+        position="0 0 0"
+        rotation="0 0 0"
+        animation-mixer="clip: *; loop: repeat; time-scale: 1; duration: 10000;"
+        ></a-entsceneity>
 
         <!-- Modelo 3D da nave -->
         <a-entity 
