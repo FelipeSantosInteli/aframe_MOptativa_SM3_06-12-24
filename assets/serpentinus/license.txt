@@ -1,0 +1,11 @@
+Model Information:
+* title:	Serpentinus
+* source:	https://sketchfab.com/3d-models/serpentinus-984fd11cb18b4200a02180f643880aca
+* author:	tamminen (https://sketchfab.com/tamminen)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Serpentinus" (https://sketchfab.com/3d-models/serpentinus-984fd11cb18b4200a02180f643880aca) by tamminen (https://sketchfab.com/tamminen) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
