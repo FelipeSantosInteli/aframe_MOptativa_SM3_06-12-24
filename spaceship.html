@@ -2,39 +2,30 @@
     <head>
       <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
       <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.2/dist/aframe-extras.min.js"></script>
-      <script>
-        AFRAME.registerComponent("entity-test", {
-          init: function() {
-            this.el.addEventListener("model-loaded", e => {
-              const mesh = this.el.getObject3D("mesh");
-              
-              mesh.traverse(node => {
-                if (!node.material) return;
-                node.material.map.encoding = THREE.LinearEncoding
-              })
-            })
-          }
-        })
-      </script>
     </head>
     <body>
       <a-scene renderer="colorManagement: true">
       <!-- Gerenciamento de Assets do A-Frame -->
         <a-assets>
+
           <!-- Fundo e assets-->
           <img id="fundo" src="./texturas/material_emissive.png" />
+
           <a-assets-item id="ship" src="./assets/pixel_low_poly_spaceship/scene.gltf"></a-assets-item>
           <a-assets-item id="propulsion" src="./assets/simple_engine_plume_test/simple_engine_plume_test.glb"></a-assets-item>
           <a-assets-item id="hyperspeed" src="./assets/hyperspeed_starfield/scene.gltf"></a-assets-item>
-          <a-asset id="tronicle" src="./assets/tronicle/scene.gltf"></a-asset>
+          <a-assets-item id="tronicle" src="./assets/tronicle/scene.gltf"></a-assets-item>
           <a-assets-item id="glow" src="./assets/uttm_glow/scene.gltf"></a-assets-item>
-          <a-assets-item id="light_beam" src="./assets/appearance_effect_light_beam/scene.gltf"></a-assets-item>
+          <a-assets-item id="light_beam" src="./assets/appearance_effect_starlight/scene.gltf"></a-assets-item>
+          <a-assets-item id="light_beam2" src="./assets/appearance_effect_light_beam (1)/scene.gltf"></a-assets-item>
           <a-assets-item id="serpentinus" src="./assets/serpentinus/scene.gltf"></a-assets-item>
           <a-assets-item id="nebulous_flux" src="./assets/planetary_nebula/scene.gltf"></a-assets-item>
 
+          <audio id="orbit1" src="./audio/Destiny OST 3 - Excerpt from _The Hope_ [ ezmp3.cc ].mp3" preload="auto"></audio>
+
+          <audio id="engage-sound" src="./audio/Spaceship Hyperspace Jump Sound Effect [ ezmp3.cc ].mp3"></audio>
 
         </a-assets>
-
         <a-sky 
           id="skybox"
           src="#fundo"
@@ -64,7 +55,19 @@
               loop: true;
               dur: 30000;
               easing: easeInOutQuad;"
-          ></a-entity>      
+          ></a-entity>
+          <a-entity
+          gltf-model="#light_beam2"
+          scale="7 7 7"
+          position="0 0 0"
+          animation__rotationY="
+            property: rotation.y;
+            from: 0;
+            to: 360;
+            loop: true;
+            dur: 28000;
+            easing: easeInOutQuad;"
+        ></a-entity>        
           <a-entity
             gltf-model="#glow"
             animation__rotationY="
@@ -76,19 +79,17 @@
               easing: easeInOutQuad;"  
           ></a-entity>
           <a-gltf-model
-            src="#tronicle"
+            gltf-model="#tronicle"
             position="0 -1 0"
             scale="1 1 1"
             rotation="90 0 0"
             animation-mixer="clip: Animation; loop: repeat; time-scale: 1;"
-            entity-test
           ></a-gltf-model>
           <a-entity
             gltf-model="#serpentinus"
             position="0 -2 0"
             scale="10 10 10"
             rotation="0 0 0"
-            material="src: ./assets/serpentinus/scene.bin; opacity: 1;"
             animation-mixer="clip: Animation; loop: repeat; time-scale: 1;"
           ></a-entity>
         </a-entity>
@@ -152,32 +153,57 @@
             animation-mixer="clip: Action; loop: repeat; time-scale: 1;"
           ></a-entity>
 
+          <a-entity
+            id="orbit-music1"
+            sound="src: #orbit1; autoplay: true; loop: true; volume: 1;"
+            position="0 0 0"
+          ></a-entity>
+
+          <a-entity
+            id="engage-sound-effect"
+            sound="src: #engage-sound; autoplay: false; loop: false; volume: 1"
+            position="0 0 0"
+          ></a-entity>
+
         </a-entity>
 
-        <a-entity position="6 0 0" rotation="0 90 0">
+        <a-entity rotation="0 150 0">
           <!-- Camera + Cursor. -->
-          <a-camera position="5 0 0" id="cameraCena">
+          <a-camera position="-5 0 10" id="cameraCena">
             <a-cursor intersection-spawn="Event: click; mixin:voxel;" material="color: #ffffff">
             </a-cursor>
           </a-camera>
               
         </a-entity>
 
+
+
       </a-scene>
     </body>
     <script>
+      document.getElementById('engage').addEventListener('mouseenter', function() {
 
-      document.getElementById('engage').addEventListener('click', function() {
         hyperspeed = document.getElementById('hyperspeed-entity');
-        hyperspeed.setAttribute('animation-mixer', {"clip": 'Hyperspeed', 'loop': 'repeat', 'time-scale': "0.9", 'easing': "easeIn"});
         nave = document.getElementById('nave');
-        nave.setAttribute('animation__Z', {"property": 'position.z', 'from': '3', 'to': '350', 'dur': '120000', 'easing': 'easeInOutQuad', 'loop': 'false'});
         skybox = document.getElementById('skybox');
+        camera = document.getElementById('cameraCena');
+        engageSound = document.getElementById('engage-sound-effect');
+
+        hyperspeed.setAttribute('animation-mixer', {"clip": 'Hyperspeed', 'loop': 'repeat', 'time-scale': "0.9", 'easing': "easeIn"});
+        
+        nave.setAttribute('animation__Z', {"property": 'position.z', 'from': '3', 'to': '350', 'dur': '120000', 'easing': 'easeInOutQuad', 'loop': 'false'});
+
+        setTimeout(function() {
+          engageSound.components.sound.playSound();
+        }, 2000);
+        
         skybox.setAttribute('animation__rotation', {"property": 'rotation', 'from': '0 0 0', 'to': '0 0 360', 'dur': '100000', 'easing': 'easeInOutQuad', 'loop': 'true'});
         skybox.setAttribute('animarion__position', {"property": 'position.z', 'from': '0', 'to': '350', 'dur': '119000', 'easing': 'easeInOutQuad', 'loop': 'false'});
-        camera = document.getElementById('cameraCena');
-        camera.setAttribute('animation__position', {"property": 'position.x', 'to': '-350', 'dur': '122000', 'easing': 'easeInOutQuad', 'loop': 'false'});
+        
+        camera.setAttribute('animation__position', {"property": 'position', 'to': '-350 0 -600', 'dur': '180000', 'easing': 'easeInOutQuad', 'loop': 'false'});
+        
         console.log('Engage!');
       });
+
     </script>
   </html>
